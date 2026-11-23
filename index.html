@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Initiation à l’intelligence artificielle – Cours de lycée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14213d; --muted:#4a5775; --bg:#f2f5fb; --card:#ffffff; --line:#d5ddee;
+  --blue:#2f5bff; --blue-soft:#dfe7ff; --coral:#ff5c7a; --coral-soft:#ffe1e7; --mint:#0f9d7a; --mint-soft:#d9f5ec;
+  --head:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:1.08rem/1.65 var(--body)}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(242,245,251,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:10px;padding-bottom:10px}
+.logo{font:800 1.1rem var(--head);text-decoration:none;color:var(--ink)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:6px 12px;border-radius:99px;text-decoration:none;color:var(--muted);font-size:.95rem}
+nav a:hover{background:var(--blue-soft);color:var(--ink)}
+.hero{padding:72px 0 56px}
+.hero h1{font:800 clamp(2.4rem,6.5vw,4.6rem)/1.02 var(--head);letter-spacing:-.03em;margin:0 0 22px;max-width:14ch}
+.hero p{max-width:56ch;font-size:1.2rem;color:var(--muted);margin:0 0 28px}
+.btn{display:inline-block;background:var(--ink);color:#fff;border:0;border-radius:10px;padding:12px 22px;font:700 1rem var(--body);text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--blue)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);margin-left:8px}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font:800 clamp(1.7rem,4vw,2.5rem)/1.1 var(--head);letter-spacing:-.02em;margin:0 0 14px}
+h3{font:700 1.25rem var(--head);margin:0 0 6px}
+.lead{max-width:62ch;color:var(--muted)}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:28px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card p{margin:0;color:var(--muted)}
+.tag{display:inline-block;font:700 .85rem var(--body);padding:2px 10px;border-radius:99px;margin-bottom:10px}
+.t-blue{background:var(--blue-soft);color:#1b3ac2}.t-coral{background:var(--coral-soft);color:#b3173a}.t-mint{background:var(--mint-soft);color:#0a6b53}
+.timeline{list-style:none;margin:30px 0 0;padding:0 0 0 22px;border-left:3px solid var(--blue)}
+.timeline li{position:relative;padding:0 0 22px 18px}
+.timeline li::before{content:"";position:absolute;left:-31px;top:7px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:3px solid var(--blue)}
+.timeline b{font:800 1.1rem var(--head)}
+.callout{background:var(--ink);color:#fff;border-radius:14px;padding:22px 26px;margin-top:28px}
+.callout p{margin:0;color:#dfe5f5}
+.lab{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr);gap:24px;margin-top:28px;align-items:start}
+@media(max-width:800px){.lab{grid-template-columns:1fr}.hero{padding-top:44px}}
+canvas{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:14px;cursor:crosshair;touch-action:manipulation}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;padding:7px 16px;font:700 .95rem var(--body);cursor:pointer}
+.chip[aria-pressed="true"].c1{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"].c2{background:var(--coral);border-color:var(--coral);color:#fff}
+.chip.plain:hover{border-color:var(--ink)}
+.steps{margin:0;padding-left:20px;color:var(--muted)}
+.steps li{margin-bottom:8px}
+#verdict{font-weight:700;margin-top:12px;min-height:1.6em}
+.q{margin-top:22px}
+.q p.qt{font-weight:700;margin:0 0 10px}
+.opts{display:flex;flex-direction:column;gap:8px;max-width:560px}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 14px;font:inherit;color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt.ok{background:var(--mint-soft);border-color:var(--mint)}
+.opt.ko{background:var(--coral-soft);border-color:var(--coral)}
+.fb{margin:8px 0 0;color:var(--muted);min-height:1.4em}
+dl{margin:26px 0 0;display:grid;gap:14px}
+dt{font:700 1.05rem var(--head)}
+dd{margin:0;color:var(--muted)}
+footer{padding:36px 0 56px;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#haut">Initiation à l’IA</a>
+    <nav aria-label="Navigation du cours">
+      <a href="#definition">Définition</a>
+      <a href="#histoire">Histoire</a>
+      <a href="#apprendre">Apprendre</a>
+      <a href="#labo">Labo</a>
+      <a href="#ethique">Éthique</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main id="haut">
+  <div class="wrap hero">
+    <h1>Une IA apprend à partir d’exemples.</h1>
+    <p>Reconnaître un visage, traduire une phrase, recommander une vidéo : derrière chaque exemple, il y a des données et des calculs, pas de la magie. Ce cours t’explique comment ça marche, et où ça s’arrête.</p>
+    <a class="btn" href="#labo">Essayer le labo</a><a class="btn ghost" href="#definition">Lire le cours</a>
+  </div>
+
+  <section id="definition">
+    <div class="wrap">
+      <h2>C’est quoi, une intelligence artificielle ?</h2>
+      <p class="lead">Une intelligence artificielle (IA) est un programme capable d’accomplir une tâche qui demande normalement de l’intelligence humaine : comprendre une image, un texte ou une voix, prendre une décision, ou créer un contenu.</p>
+      <div class="grid">
+        <div class="card"><span class="tag t-blue">Programme classique</span><h3>On écrit les règles</h3><p>Le programmeur décrit chaque étape. « Si la température dépasse 30 °C, allume le ventilateur. »</p></div>
+        <div class="card"><span class="tag t-coral">Apprentissage automatique</span><h3>La machine trouve les règles</h3><p>On lui montre des milliers d’exemples et elle en déduit ses propres règles. C’est le <em>machine learning</em>.</p></div>
+        <div class="card"><span class="tag t-mint">Dans ta vie</span><h3>Tu en croises déjà</h3><p>Filtre anti-spam, suggestions de musique, correcteur de clavier, assistants vocaux, filtres photo.</p></div>
+      </div>
+      <div class="callout"><p><b>À retenir :</b> une IA ne « comprend » pas comme nous. Elle repère des régularités statistiques dans les données qu’on lui a données.</p></div>
+    </div>
+  </section>
+
+  <section id="histoire">
+    <div class="wrap">
+      <h2>Une histoire en quelques dates</h2>
+      <ol class="timeline">
+        <li><b>1950</b> – Alan Turing se demande si une machine peut penser et propose un test pour en juger.</li>
+        <li><b>1956</b> – L’expression « intelligence artificielle » apparaît lors d’une conférence à Dartmouth (États-Unis).</li>
+        <li><b>1997</b> – L’ordinateur Deep Blue bat le champion du monde d’échecs Garry Kasparov.</li>
+        <li><b>2012</b> – Les réseaux de neurones profonds dominent la reconnaissance d’images grâce aux données massives et aux cartes graphiques.</li>
+        <li><b>2016</b> – AlphaGo bat un des meilleurs joueurs de go au monde.</li>
+        <li><b>Années 2020</b> – Les IA génératives produisent du texte, des images et du code.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="apprendre">
+    <div class="wrap">
+      <h2>Comment une machine apprend</h2>
+      <p class="lead">Trois grandes familles d’apprentissage, selon le type d’aide qu’on donne à la machine.</p>
+      <div class="grid">
+        <div class="card"><span class="tag t-blue">Supervisé</span><h3>Avec les réponses</h3><p>On donne des exemples déjà étiquetés (« cette photo montre un chat »). Utilisé pour trier les mails ou reconnaître des objets.</p></div>
+        <div class="card"><span class="tag t-coral">Non supervisé</span><h3>Sans les réponses</h3><p>La machine regroupe elle-même les données qui se ressemblent. Utilisé pour repérer des profils de clients.</p></div>
+        <div class="card"><span class="tag t-mint">Par renforcement</span><h3>Par essais et récompenses</h3><p>La machine tente des actions, gagne des points ou en perd, et s’améliore. Utilisé pour les jeux et la robotique.</p></div>
+      </div>
+      <h3 style="margin-top:34px">Le cycle d’un projet d’IA</h3>
+      <ol class="steps">
+        <li>Collecter des données.</li>
+        <li>Les nettoyer et les étiqueter.</li>
+        <li>Entraîner un modèle sur une partie des données.</li>
+        <li>Tester le modèle sur des données qu’il n’a jamais vues.</li>
+        <li>Corriger, puis déployer.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="labo">
+    <div class="wrap">
+      <h2>Labo : entraîne ton propre classifieur</h2>
+      <p class="lead">Chaque point est un animal décrit par deux mesures. Ajoute des exemples de chats et de chiens : l’IA colore le fond selon les 3 points les plus proches (méthode des k plus proches voisins). Puis teste un nouvel animal.</p>
+      <div class="lab">
+        <div>
+          <div class="tools" role="group" aria-label="Choisir une catégorie">
+            <button class="chip c1" id="b1" aria-pressed="true">Ajouter un chat</button>
+            <button class="chip c2" id="b2" aria-pressed="false">Ajouter un chien</button>
+            <button class="chip plain" id="bt" aria-pressed="false">Tester un animal</button>
+            <button class="chip plain" id="bc">Effacer</button>
+          </div>
+          <canvas id="cv" width="560" height="380" role="img" aria-label="Nuage de points chats et chiens avec zones de prédiction"></canvas>
+          <div id="verdict" aria-live="polite"></div>
+        </div>
+        <div class="card">
+          <h3>Ce que tu observes</h3>
+          <p>Axe horizontal : taille des oreilles. Axe vertical : longueur du museau.</p>
+          <ul class="steps" style="margin-top:12px">
+            <li>Plus tu donnes d’exemples variés, plus les frontières sont fiables.</li>
+            <li>Mets quelques points « mélangés » : l’IA se trompe plus souvent.</li>
+            <li>Si tu ne donnes que des chats, elle répondra « chat » partout. C’est un <b>biais</b> de données.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ethique">
+    <div class="wrap">
+      <h2>Limites et responsabilité</h2>
+      <p class="lead">Une IA est un outil puissant, mais elle se trompe et reflète les données dont elle est issue.</p>
+      <div class="grid">
+        <div class="card"><h3>Les biais</h3><p>Si les données sont déséquilibrées, les résultats le sont aussi. Un système de reconnaissance faciale entraîné surtout sur certains visages fonctionne moins bien sur les autres.</p></div>
+        <div class="card"><h3>Les erreurs</h3><p>Une IA générative peut inventer une information fausse avec beaucoup d’assurance. Vérifie toujours avec une source fiable.</p></div>
+        <div class="card"><h3>La vie privée</h3><p>Tes photos, messages et clics peuvent servir à entraîner des modèles. Pense à ce que tu partages (RGPD).</p></div>
+        <div class="card"><h3>L’honnêteté scolaire</h3><p>Utiliser une IA pour t’aider à comprendre est utile. Lui faire rendre ton devoir à ta place, c’est de la triche et tu n’apprends rien.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="wrap">
+      <h2>Quiz express</h2>
+      <p class="lead">Trois questions pour vérifier ce que tu as retenu.</p>
+      <div id="quizbox"></div>
+      <p id="score" style="font-weight:700;margin-top:22px"></p>
+    </div>
+  </section>
+
+  <section id="glossaire">
+    <div class="wrap">
+      <h2>Glossaire</h2>
+      <dl>
+        <div><dt>Algorithme</dt><dd>Suite d’instructions précises pour résoudre un problème.</dd></div>
+        <div><dt>Données d’entraînement</dt><dd>Exemples utilisés pour apprendre au modèle.</dd></div>
+        <div><dt>Modèle</dt><dd>Résultat de l’entraînement : le programme qui fait les prédictions.</dd></div>
+        <div><dt>Réseau de neurones</dt><dd>Modèle inspiré du cerveau, formé de couches de petits calculs reliés entre eux.</dd></div>
+        <div><dt>Biais</dt><dd>Déséquilibre ou préjugé présent dans les données et repris par le modèle.</dd></div>
+        <div><dt>IA générative</dt><dd>IA qui crée du contenu nouveau (texte, image, son, code).</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Cours « Initiation à l’intelligence artificielle » – niveau lycée.</div>
+</footer>
+
+<script>
+/* ---------- Labo k-NN ---------- */
+(function(){
+  var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height,K=3;
+  var pts=[],mode=1,test=null;
+  var col={1:'#2f5bff',2:'#ff5c7a'},tint={1:'rgba(47,91,255,.13)',2:'rgba(255,92,122,.15)'};
+  function seed(){
+    pts=[];
+    var i,r=function(a,b){return a+Math.random()*(b-a)};
+    for(i=0;i<8;i++)pts.push({x:r(60,220),y:r(60,170),c:1});
+    for(i=0;i<8;i++)pts.push({x:r(340,500),y:r(210,330),c:2});
+    test=null;document.getElementById('verdict').textContent='';
+  }
+  function classify(x,y){
+    var s=pts.map(function(p){return {c:p.c,d:(p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)}}).sort(function(a,b){return a.d-b.d}).slice(0,K);
+    var n=0;s.forEach(function(p){if(p.c==1)n++});
+    return n*2>s.length?1:2;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    if(pts.length>=K){
+      for(var x=0;x<W;x+=10)for(var y=0;y<H;y+=10){ctx.fillStyle=tint[classify(x+5,y+5)];ctx.fillRect(x,y,10,10);}
+    }
+    pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,7,0,6.283);ctx.fillStyle=col[p.c];ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();});
+    if(test){ctx.beginPath();ctx.arc(test.x,test.y,10,0,6.283);ctx.fillStyle='#14213d';ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#fff';ctx.stroke();}
+    ctx.fillStyle='#4a5775';ctx.font='13px sans-serif';
+    ctx.fillText('Taille des oreilles →',W-150,H-10);
+    ctx.save();ctx.translate(14,150);ctx.rotate(-Math.PI/2);ctx.fillText('Longueur du museau →',0,0);ctx.restore();
+  }
+  function setMode(m){
+    mode=m;
+    ['b1','b2','bt'].forEach(function(id,i){document.getElementById(id).setAttribute('aria-pressed',String(i+1===m));});
+  }
+  cv.addEventListener('click',function(e){
+    var r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height;
+    if(mode===3){
+      if(pts.length<K){document.getElementById('verdict').textContent='Ajoute d’abord quelques exemples.';return;}
+      test={x:x,y:y};var c=classify(x,y);
+      document.getElementById('verdict').textContent='Prédiction de l’IA : '+(c==1?'c’est un chat.':'c’est un chien.');
+    }else{pts.push({x:x,y:y,c:mode});test=null;document.getElementById('verdict').textContent='';}
+    draw();
+  });
+  document.getElementById('b1').onclick=function(){setMode(1)};
+  document.getElementById('b2').onclick=function(){setMode(2)};
+  document.getElementById('bt').onclick=function(){setMode(3)};
+  document.getElementById('bc').onclick=function(){pts=[];test=null;document.getElementById('verdict').textContent='';draw();};
+  seed();draw();
+})();
+
+/* ---------- Quiz ---------- */
+(function(){
+  var Q=[
+    {q:'Quelle est la différence principale entre un programme classique et le machine learning ?',
+     o:['Le machine learning est plus rapide','La machine déduit elle-même les règles à partir d’exemples','Le programme classique n’utilise pas d’ordinateur'],a:1,
+     e:'En machine learning, on fournit des exemples et la machine en tire ses règles.'},
+    {q:'Un modèle est entraîné presque uniquement sur des photos de chats. Que risque-t-il de se passer ?',
+     o:['Il reconnaîtra mal les autres animaux','Il deviendra plus intelligent','Rien de particulier'],a:0,
+     e:'Des données déséquilibrées créent un biais : le modèle généralise mal.'},
+    {q:'Une IA générative te donne une information très sûre d’elle. Que fais-tu ?',
+     o:['Je la recopie telle quelle','Je la vérifie avec une source fiable','Je suppose qu’elle a raison car c’est une machine'],a:1,
+     e:'Une IA peut se tromper ou inventer. La vérification est indispensable.'}
+  ];
+  var box=document.getElementById('quizbox'),score=document.getElementById('score'),done=0,good=0;
+  Q.forEach(function(item,i){
+    var d=document.createElement('div');d.className='q';
+    var p=document.createElement('p');p.className='qt';p.textContent=(i+1)+'. '+item.q;d.appendChild(p);
+    var w=document.createElement('div');w.className='opts';d.appendChild(w);
+    var fb=document.createElement('p');fb.className='fb';fb.setAttribute('aria-live','polite');d.appendChild(fb);
+    item.o.forEach(function(t,j){
+      var b=document.createElement('button');b.className='opt';b.textContent=t;
+      b.onclick=function(){
+        var bs=w.querySelectorAll('button');
+        bs.forEach(function(x){x.disabled=true});
+        bs[item.a].classList.add('ok');
+        if(j===item.a){good++;fb.textContent='Bravo ! '+item.e;}
+        else{b.classList.add('ko');fb.textContent='Pas tout à fait. '+item.e;}
+        done++;
+        if(done===Q.length)score.textContent='Score final : '+good+' / '+Q.length+(good===Q.length?' – excellent !':' – relis les sections concernées.');
+      };
+      w.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+})();
+</script>
+</body>
+</html>
